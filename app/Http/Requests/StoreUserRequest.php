@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreUserRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        $user = auth()->user();
+
+        // Registro público: si quieres permitir registro libre, deja true SIN auth
+        // Si quieres SOLO admin/bibliotecario, haz esto:
+        if (!$user) return false;
+
+        return $user->hasRole('Admin') || $user->hasRole('Bibliotecario');
+    }
+
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, ValidationRule|array|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'nombre'=> 'string|max:255|required',
+            'direccion'=> 'string|max:255',
+            'telefono'=> 'string|max:255',
+            'email'=> 'required|email|unique:users',
+            'password'=> 'required|min:8',
+        ];
+    }
+
+
+}
