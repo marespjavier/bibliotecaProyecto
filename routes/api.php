@@ -48,8 +48,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/autor', [AutorController::class, 'store']);
     Route::put('/autor/{autor}', [AutorController::class, 'update']);
     Route::delete('/autor/{autor}', [AutorController::class, 'destroy']);
-
-
-    // (opcional) ver datos de un usuario
-    Route::get('/user/{user}', [UserController::class, 'show']);
 });

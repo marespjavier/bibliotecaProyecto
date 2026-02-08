@@ -57,3 +57,89 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# 📚 Biblioteca API – Proyecto 2ª Evaluación
+
+API REST desarrollada con **Laravel** para la gestión de una biblioteca, incluyendo **usuarios, libros, autores, categorías y préstamos**, con **autenticación y control de permisos por roles**.
+
+Proyecto realizado para la **2ª evaluación del ciclo de Desarrollo de Aplicaciones Web (DAW)**.
+
+---
+
+## 🎯 Objetivo
+
+Desarrollar un **servicio web reutilizable** que permita:
+
+- Autenticación mediante **tokens Bearer (Laravel Sanctum)**
+- Control de acceso por **roles y permisos**
+- Gestión completa de entidades relacionadas
+- Consumo del servicio mediante clientes REST (Postman)
+
+---
+
+## 🛠️ Tecnologías
+
+- Laravel
+- PHP
+- Eloquent ORM
+- Laravel Sanctum
+- Spatie Laravel Permission
+- PostgreSQL / MySQL
+- Docker (Laravel Sail)
+- Postman
+
+---
+
+## 👥 Roles del sistema
+
+- **Admin**: control total del sistema
+- **Bibliotecario**: gestión de libros, autores, categorías y préstamos
+- **Usuario**: consulta del catálogo y visualización de sus préstamos
+
+---
+
+## 🔐 Autenticación
+
+- Login mediante email y contraseña
+- Respuesta con **token Bearer**
+- Acceso a rutas protegido con `auth:sanctum`
+
+---
+
+## 🧩 Entidades principales
+
+- User
+- Libro
+- Autor
+- Categoría
+- Préstamo
+
+Relaciones gestionadas mediante **Eloquent ORM**.
+
+---
+
+## 🔁 Funcionalidades (CRUD)
+
+- **Usuarios**: crear, ver, editar y eliminar (según rol)
+- **Libros**: CRUD completo
+- **Autores**: CRUD completo
+- **Categorías**: CRUD completo
+- **Préstamos**: creación, listado y control por usuario
+
+### Reglas de negocio
+- Un usuario solo puede ver **sus propios préstamos**
+- Un libro **no puede tener más de un préstamo activo**
+- El acceso depende del **rol y permisos**
+
+---
+
+## 🚀 Instalación rápida
+
+```bash
+git clone https://github.com/marespjavier/bibliotecaProyecto.git
+cd bibliotecaProyecto
+cp .env.example .env
+docker compose up -d
+docker compose exec laravel.test composer install
+docker compose exec laravel.test php artisan key:generate
+docker compose exec laravel.test php artisan migrate:fresh --seed
