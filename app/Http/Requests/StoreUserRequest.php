@@ -14,8 +14,6 @@ class StoreUserRequest extends FormRequest
     {
         $user = auth()->user();
 
-        // Registro público: si quieres permitir registro libre, deja true SIN auth
-        // Si quieres SOLO admin/bibliotecario, haz esto:
         if (!$user) return false;
 
         return $user->hasRole('Admin') || $user->hasRole('Bibliotecario');

@@ -8,13 +8,13 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Registro y login: públicas
-Route::post('/user', [UserController::class, 'store']);
 Route::post('/user/login', [UserController::class, 'verify']);
 
 // Todo lo protegido por token
 Route::middleware('auth:sanctum')->group(function () {
     // usuarios
     Route::get('/user/logout', [UserController::class, 'logout']);
+    Route::post('/user', [UserController::class, 'store']);
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::put('/user/{user}', [UserController::class, 'update']);
