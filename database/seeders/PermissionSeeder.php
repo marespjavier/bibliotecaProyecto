@@ -13,29 +13,29 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'ver_libro',]);
-        Permission::create(['name' => 'editar_libro']);
-        Permission::create(['name' => 'eliminar_libro']);
-        Permission::create(['name' => 'crear_libro']);
+        Permission::firstOrCreate(['name' => 'ver_libro',]);
+        Permission::firstOrCreate(['name' => 'editar_libro']);
+        Permission::firstOrCreate(['name' => 'eliminar_libro']);
+        Permission::firstOrCreate(['name' => 'crear_libro']);
 
-        Permission::create(['name' => 'ver_prestamo',]);
-        Permission::create(['name' => 'editar_prestamo']);
-        Permission::create(['name' => 'eliminar_prestamo']);
-        Permission::create(['name' => 'crear_prestamo']);
+        Permission::firstOrCreate(['name' => 'ver_prestamo',]);
+        Permission::firstOrCreate(['name' => 'editar_prestamo']);
+        Permission::firstOrCreate(['name' => 'eliminar_prestamo']);
+        Permission::firstOrCreate(['name' => 'crear_prestamo']);
 
-        Permission::create(['name' => 'ver_autor',]);
-        Permission::create(['name' => 'editar_autor']);
-        Permission::create(['name' => 'eliminar_autor']);
-        Permission::create(['name' => 'crear_autor']);
+        Permission::firstOrCreate(['name' => 'ver_autor',]);
+        Permission::firstOrCreate(['name' => 'editar_autor']);
+        Permission::firstOrCreate(['name' => 'eliminar_autor']);
+        Permission::firstOrCreate(['name' => 'crear_autor']);
 
-        Permission::create(['name' => 'ver_usuario',]);
-        Permission::create(['name' => 'editar_usuario']);
-        Permission::create(['name' => 'eliminar_usuario']);
-        Permission::create(['name' => 'crear_usuario']);
+        Permission::firstOrCreate(['name' => 'ver_usuario',]);
+        Permission::firstOrCreate(['name' => 'editar_usuario']);
+        Permission::firstOrCreate(['name' => 'eliminar_usuario']);
+        Permission::firstOrCreate(['name' => 'crear_usuario']);
 
-        Permission::create(['name' => 'ver_categoria',]);
-        Permission::create(['name' => 'editar_categoria']);
-        Permission::create(['name' => 'eliminar_categoria']);
-        Permission::create(['name' => 'crear_categoria']);
+        Permission::firstOrCreate(['name' => 'ver_categoria',]);
+        Permission::firstOrCreate(['name' => 'editar_categoria']);
+        Permission::firstOrCreate(['name' => 'eliminar_categoria']);
+        Permission::firstOrCreate(['name' => 'crear_categoria']);
     }
 }
