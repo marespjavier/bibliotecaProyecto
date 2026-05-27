@@ -31,25 +31,15 @@ class UserFactory extends Factory
     {
         return [
 
-            'nombre' => fake()->name(),
+            'nombre' => $this->faker->name(),
 
-            'direccion' => fake()->streetAddress(),
+            'direccion' => $this->faker->streetAddress(),
 
-            'telefono' => fake()->phoneNumber(),
+            'telefono' => $this->faker->numerify('6########'),
 
-            'email' => fake()->unique()->safeEmail(),
+            'email' => $this->faker->unique()->safeEmail(),
 
             'email_verified_at' => now(),
-
-            /*
-            |--------------------------------------------------------------------------
-            | Avatar temporal
-            |--------------------------------------------------------------------------
-            |
-            | Después se reemplaza en UserSeeder
-            | usando el ID real del usuario.
-            |
-            */
 
             'avatar_url' => null,
 
