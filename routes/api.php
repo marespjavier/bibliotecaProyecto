@@ -5,10 +5,13 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\LibroController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
+
 
 // Registro y login: públicas
 Route::post('/user/login', [UserController::class, 'verify']);
+Route::get('/libro', [LibroController::class, 'index']);
 
 // Todo lo protegido por token
 Route::middleware('auth:sanctum')->group(function () {
@@ -24,12 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
     // préstamos
     Route::get('/prestamo', [PrestamoController::class, 'index']);
     Route::get('/prestamo/{prestamo}', [PrestamoController::class, 'show']);
-    Route::post('/prestamo', [PrestamoController::class, 'store']);
+    Route::post('/prestamo', [PrestamoController::class, 'store'])->middleware('prestamo.limit');
     Route::put('/prestamo/{prestamo}', [PrestamoController::class, 'update']);
     Route::delete('/prestamo/{prestamo}', [PrestamoController::class, 'destroy']);
 
     // libros
-    Route::get('/libro', [LibroController::class, 'index']);
     Route::get('/libro/{libro}', [LibroController::class, 'show']);
     Route::post('/libro', [LibroController::class, 'store']);
     Route::put('/libro/{libro}', [LibroController::class, 'update']);
@@ -48,4 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/autor', [AutorController::class, 'store']);
     Route::put('/autor/{autor}', [AutorController::class, 'update']);
     Route::delete('/autor/{autor}', [AutorController::class, 'destroy']);
+
+    //dashboard
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 });

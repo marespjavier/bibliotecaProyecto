@@ -41,15 +41,40 @@ class UpdateUserRequest extends FormRequest
         $userId = $this->route('user')->id;
 
         return [
-            'nombre' => 'sometimes|string|max:255',
-            'direccion' => 'sometimes|nullable|string|max:255',
-            'telefono' => 'sometimes|nullable|string|max:255',
+            'nombre' =>
+                'sometimes|string|max:255',
+
+            'direccion' =>
+                'sometimes|required|string|min:10|max:255',
+
+            'telefono' =>
+                'sometimes|required|digits:9',
+
             'email' => [
                 'sometimes',
                 'email',
                 Rule::unique('users', 'email')->ignore($userId),
             ],
-            'password' => 'sometimes|nullable|min:8',
+
+            'password' =>
+                'sometimes|nullable|min:8',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'direccion.required' =>
+                'La dirección es obligatoria.',
+
+            'direccion.min' =>
+                'La dirección es demasiado corta.',
+
+            'telefono.required' =>
+                'El teléfono es obligatorio.',
+
+            'telefono.digits' =>
+                'El teléfono debe tener 9 dígitos.',
         ];
     }
 }

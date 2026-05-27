@@ -8,20 +8,70 @@ use App\Http\Requests\StorePrestamoRequest;
 use App\Http\Requests\UpdatePrestamoRequest;
 use App\Http\Requests\DeletePrestamoRequest;
 use App\Models\Prestamo;
+use Carbon\Carbon;
 
 class PrestamoController extends Controller
 {
     public function index(ReadAllPrestamosRequest $request)
     {
+        /*
+        |--------------------------------------------------------------------------
+        | Actualizar préstamos retrasados automáticamente
+        |--------------------------------------------------------------------------
+        */
+
+        Prestamo::where('estado', 'activo')
+
+            ->whereNotNull('fecha_devolucion')
+
+            ->whereDate(
+                'fecha_devolucion',
+                '<',
+                Carbon::today()
+            )
+
+            ->update([
+                'estado' => 'retrasado'
+            ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Usuario autenticado
+        |--------------------------------------------------------------------------
+        */
+
         $user = auth()->user();
 
-        if ($user->hasRole('Admin') || $user->hasRole('Bibliotecario')) {
-            return Prestamo::with(['user', 'libro'])->get();
+        /*
+        |--------------------------------------------------------------------------
+        | Admin / Bibliotecario
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $user->hasRole('Admin') ||
+            $user->hasRole('Bibliotecario')
+        ) {
+
+            return Prestamo::with([
+                'user',
+                'libro'
+            ])->get();
         }
 
-        // Usuario normal -> solo los suyos
-        return Prestamo::with(['user', 'libro'])
+        /*
+        |--------------------------------------------------------------------------
+        | Usuario normal
+        |--------------------------------------------------------------------------
+        */
+
+        return Prestamo::with([
+            'user',
+            'libro'
+        ])
+
             ->where('user_id', $user->id)
+
             ->get();
     }
 

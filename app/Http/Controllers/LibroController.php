@@ -18,27 +18,38 @@ class LibroController extends Controller
 
     public function store(StoreLibroRequest $request)
     {
-        $libro = new Libro();
-        $libro->titulo = $request->titulo;
-        $libro->isbn = $request->isbn;
-        $libro->anyo_publicacion = $request->anyo_publicacion;
-        $libro->descripcion = $request->descripcion;
-        $libro->autor_id = $request->autor_id;
-        $libro->categoria_id = $request->categoria_id;
+        $data = $request->validated();
 
-        $ok = $libro->save();
+        /*
+        |--------------------------------------------------------------------------
+        | Portada aleatoria
+        |--------------------------------------------------------------------------
+        */
 
-        if (!$ok) {
+        $data['imagen_url'] =
+            'https://picsum.photos/300/450?random=' .
+            rand(1, 1000);
+
+        $libro = Libro::create($data);
+
+        if (!$libro) {
+
             return response([
                 'error' => true,
-                'message' => 'No se pudo crear el libro',
+
+                'message' =>
+                    'No se pudo crear el libro',
             ], 500);
         }
 
         return response([
             'error' => false,
-            'message' => 'Libro creado correctamente',
-            'data' => $libro->load(['autor','categoria']),
+
+            'message' =>
+                'Libro creado correctamente',
+
+            'data' => $libro
+
         ], 201);
     }
 

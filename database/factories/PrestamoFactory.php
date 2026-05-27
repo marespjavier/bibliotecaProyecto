@@ -2,42 +2,125 @@
 
 namespace Database\Factories;
 
-use App\Models\Libro;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Prestamo>
- */
 class PrestamoFactory extends Factory
 {
     /**
      * Define the model's default state.
-     *
-     * @return array<string, mixed>
      */
+
     public function definition(): array
     {
-        $fechaPrestamo = $this->faker->dateTimeBetween('-2 months', 'now');
-        $devuelto = $this->faker->boolean(40);
+        /*
+        |--------------------------------------------------------------------------
+        | Estados reales
+        |--------------------------------------------------------------------------
+        |
+        | retrasado NO se genera manualmente.
+        | El sistema lo calcula automáticamente.
+        |
+        */
+
+        $estado = $this->faker->randomElement([
+            'activo',
+            'devuelto',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Fecha préstamo
+        |--------------------------------------------------------------------------
+        */
+
+        $fechaPrestamo = $this->faker
+            ->dateTimeBetween('-2 months', 'now');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Fecha devolución
+        |--------------------------------------------------------------------------
+        */
+
+        $fechaDevolucion = null;
+
+        /*
+        |--------------------------------------------------------------------------
+        | DEVUELTO
+        |--------------------------------------------------------------------------
+        */
+
+        if ($estado === 'devuelto') {
+
+            $fechaDevolucion = $this->faker
+                ->dateTimeBetween(
+                    $fechaPrestamo,
+                    'now'
+                )
+                ->format('Y-m-d');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | ACTIVO
+        |--------------------------------------------------------------------------
+        |
+        | Algunos vencidos.
+        | Algunos todavía válidos.
+        |
+        */
+
+        if ($estado === 'activo') {
+
+            /*
+            | 50% vencidos
+            */
+
+            if ($this->faker->boolean()) {
+
+                /*
+                | Fecha pasada
+                */
+
+                $fechaDevolucion = $this->faker
+                    ->dateTimeBetween(
+                        '-20 days',
+                        '-1 day'
+                    )
+                    ->format('Y-m-d');
+
+            } else {
+
+                /*
+                | Fecha futura
+                */
+
+                $fechaDevolucion = $this->faker
+                    ->dateTimeBetween(
+                        'tomorrow',
+                        '+20 days'
+                    )
+                    ->format('Y-m-d');
+            }
+        }
 
         return [
-            'user_id' => \App\Models\User::inRandomOrder()->value('id'),
-            'libro_id' => \App\Models\Libro::inRandomOrder()->value('id'),
 
+            'user_id' => \App\Models\User
+                ::inRandomOrder()
+                ->value('id'),
 
-            'fecha_prestamo' => $fechaPrestamo->format('Y-m-d'),
-            'fecha_devolucion' => $devuelto
-                ? $this->faker->dateTimeBetween($fechaPrestamo, 'now')->format('Y-m-d')
-                : null,
+            'libro_id' => \App\Models\Libro
+                ::inRandomOrder()
+                ->value('id'),
 
-            'estado' => $this->faker->randomElement([
-                'activo',
-                'devuelto',
-                'devuelto',
-                'retrasado',
-            ]),
+            'fecha_prestamo' =>
+                $fechaPrestamo->format('Y-m-d'),
 
+            'fecha_devolucion' =>
+                $fechaDevolucion,
+
+            'estado' => $estado,
         ];
     }
 }

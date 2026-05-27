@@ -21,44 +21,121 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $data = $request->validated();
-        $data['password'] = Hash::make($data['password']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Password encriptada
+        |--------------------------------------------------------------------------
+        */
+
+        $data['password'] = Hash::make(
+            $data['password']
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Avatar automático
+        |--------------------------------------------------------------------------
+        */
+
+        $data['avatar_url'] =
+            'https://i.pravatar.cc/300?u=' .
+            uniqid();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Guardar usuario
+        |--------------------------------------------------------------------------
+        */
+
+        $role = $data['role'];
+
+        unset($data['role']);
 
         $user = User::create($data);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Asignar rol
+        |--------------------------------------------------------------------------
+        */
+
+        $user->assignRole($role);
 
         if (!$user) {
             return response([
                 'error' => true,
-                'message' => "No se pudo crear el usuario",
+
+                'message' =>
+                    'No se pudo crear el usuario',
             ], 500);
         }
 
         return response([
             'error' => false,
-            'message' => "Usuario creado correctamente",
+
+            'message' =>
+                'Usuario creado correctamente',
+
             'data' => $user
+
         ], 201);
     }
     public function verify(LoginUserRequest $request)
     {
         $autenticado = Auth::attempt([
-            "email"=>$request->email,
-            "password"=>$request->password,
+            "email" => $request->email,
+            "password" => $request->password,
         ]);
 
         if (!$autenticado) {
+
             return response([
                 'error' => true,
                 'message' => 'No se ha podido autenticar el usuario',
-            ],401);
-        }else{
+            ], 401);
+
+        } else {
+
             $user = Auth::user();
-            $token= $user->createToken('auth-token')->plainTextToken;
+
+            $token = $user
+                ->createToken('auth-token')
+                ->plainTextToken;
+
             return response([
+
                 'error' => false,
-                'message' => "Usuario autenticado correctamente",
+
+                'message' =>
+                    "Usuario autenticado correctamente",
+
                 'token' => $token,
+
                 'token_type' => 'Bearer',
-            ],201);
+
+                'user' => [
+
+                    'id' => $user->id,
+
+                    'nombre' => $user->nombre,
+
+                    'email' => $user->email,
+
+                    'avatar_url' =>
+                        $user->avatar_url,
+
+                    'roles' =>
+                        $user->getRoleNames(),
+
+                    'permissions' =>
+                        $user
+                            ->getAllPermissions()
+                            ->pluck('name')
+
+                ]
+
+            ], 201);
         }
     }
     public function update(UpdateUserRequest $request, User $user)

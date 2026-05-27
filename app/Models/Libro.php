@@ -8,25 +8,53 @@ use Illuminate\Database\Eloquent\Model;
 class Libro extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'titulo',
         'isbn',
         'anyo_publicacion',
         'descripcion',
+        'imagen_url',
         'autor_id',
         'categoria_id',
     ];
 
-    public function autor(){
+    /*
+      Añadimos disponible automáticamente al JSON
+    */
+    protected $appends = [
+        'disponible',
+    ];
+
+    /*
+      Relaciones
+    */
+
+    public function autor()
+    {
         return $this->belongsTo(Autor::class);
     }
 
-    public function categoria(){
+    public function categoria()
+    {
         return $this->belongsTo(Categoria::class);
     }
+
     public function prestamos()
     {
         return $this->hasMany(Prestamo::class);
     }
 
+    /*
+      Disponibilidad calculada
+    */
+
+    public function getDisponibleAttribute()
+    {
+        $prestamoActivo = $this->prestamos()
+            ->whereIn('estado', ['activo', 'retrasado'])
+            ->exists();
+
+        return !$prestamoActivo;
+    }
 }

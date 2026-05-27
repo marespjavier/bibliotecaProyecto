@@ -13,6 +13,6 @@ class PrestamoSeeder extends Seeder
      */
     public function run(): void
     {
-        Prestamo::factory()->count(40)->create();
+        Prestamo::factory()->count(15)->create();
     }
 }

@@ -12,11 +12,12 @@ class ReadAllLibrosRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $user = auth()->user();
+      /*  $user = auth()->user();
         if (!$user) return false;
 
         // Cualquiera con permiso "ver_libro" puede listar libros
-        return $user->hasPermissionTo('ver_libro');
+        return $user->hasPermissionTo('ver_libro');*/
+        return true;
     }
     /**
      * Get the validation rules that apply to the request.
