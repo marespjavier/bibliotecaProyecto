@@ -2,14 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Str;
 
+use Faker\Factory as Faker;
+
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 class UserFactory extends Factory
 {
@@ -29,15 +32,17 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
+        $faker = Faker::create();
+
         return [
 
-            'nombre' => $this->faker->name(),
+            'nombre' => $faker->name(),
 
-            'direccion' => $this->faker->streetAddress(),
+            'direccion' => $faker->streetAddress(),
 
-            'telefono' => $this->faker->numerify('6########'),
+            'telefono' => $faker->numerify('6########'),
 
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => $faker->unique()->safeEmail(),
 
             'email_verified_at' => now(),
 
