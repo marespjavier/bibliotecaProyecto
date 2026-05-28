@@ -17,11 +17,11 @@ class RoleSeeder extends Seeder
 
         // ADMIN -> todos los permisos
         $admin = Role::findByName('Admin');
-        $admin->givePermissionTo(Permission::all());
+        $admin->syncPermissions(Permission::all());
 
         // BIBLIOTECARIO -> gestiona catálogo + préstamos + ver usuarios
         $bibliotecario = Role::findByName('Bibliotecario');
-        $bibliotecario->givePermissionTo([
+        $bibliotecario->syncPermissions([
             'ver_libro', 'crear_libro', 'editar_libro', 'eliminar_libro',
             'ver_autor', 'crear_autor', 'editar_autor', 'eliminar_autor',
             'ver_categoria', 'crear_categoria', 'editar_categoria', 'eliminar_categoria',
@@ -31,7 +31,7 @@ class RoleSeeder extends Seeder
 
         // USUARIO -> solo lectura + ver préstamos (luego limitas a "sus préstamos")
         $usuario = Role::findByName('Usuario');
-        $usuario->givePermissionTo([
+        $usuario->syncPermissions([
             'ver_libro',
             'ver_autor',
             'ver_categoria',

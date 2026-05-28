@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Str;
 
-use Faker\Factory as Faker;
-
 /**
  * @extends Factory<User>
  */
@@ -32,26 +30,15 @@ class UserFactory extends Factory
 
     public function definition(): array
     {
-        $faker = Faker::create();
-
         return [
 
-            'nombre' => $faker->name(),
+            'nombre' => fake()->name(),
 
-            'direccion' => $faker->streetAddress(),
+            'direccion' => fake()->streetAddress(),
 
-            'telefono' => $faker->numerify('6########'),
+            'telefono' => fake()->numerify('6########'),
 
-            'email' => $faker->unique()->safeEmail(),
-
-            'email_verified_at' => now(),
-
-            'avatar_url' => null,
-
-            'password' => Hash::make('123456789'),
-
-            'remember_token' => Str::random(10),
-
+            'email' => fake()->unique()->safeEmail(),
         ];
     }
 

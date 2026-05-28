@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
         User::factory(10)->create()->each(function ($user) {
 
             $user->assignRole('Usuario');
+
         });
 
         /*
@@ -29,18 +30,25 @@ class UserSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        User::create([
+        $admin = User::firstOrCreate(
 
-            'nombre' => 'Administrador',
+            [
+                'email' => 'admin@admin.com'
+            ],
 
-            'email' => 'admin@admin.com',
+            [
 
-            'password' => Hash::make('123456789'),
+                'nombre' => 'Administrador',
 
-            'avatar_url' =>
-                'https://i.pravatar.cc/300?img=11',
+                'password' => Hash::make('123456789'),
 
-        ])->assignRole('Admin');
+                'avatar_url' =>
+                    'https://i.pravatar.cc/300?img=11',
+
+            ]
+        );
+
+        $admin->assignRole('Admin');
 
         /*
         |--------------------------------------------------------------------------
@@ -48,19 +56,26 @@ class UserSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        User::create([
+        $bibliotecario = User::firstOrCreate(
 
-            'nombre' => 'Bibliotecario',
+            [
+                'email' =>
+                    'bibliotecario@bibliotecario.com'
+            ],
 
-            'email' =>
-                'bibliotecario@bibliotecario.com',
+            [
 
-            'password' => Hash::make('123456789'),
+                'nombre' => 'Bibliotecario',
 
-            'avatar_url' =>
-                'https://i.pravatar.cc/300?img=12',
+                'password' => Hash::make('123456789'),
 
-        ])->assignRole('Bibliotecario');
+                'avatar_url' =>
+                    'https://i.pravatar.cc/300?img=12',
+
+            ]
+        );
+
+        $bibliotecario->assignRole('Bibliotecario');
 
         /*
         |--------------------------------------------------------------------------
@@ -68,36 +83,39 @@ class UserSeeder extends Seeder
         |--------------------------------------------------------------------------
         */
 
-        User::create([
+        $usuario = User::firstOrCreate(
 
-            'nombre' =>
-                'Javier Martinez Espinosa',
+            [
+                'email' =>
+                    'javierme.97@iespacomolla.es'
+            ],
 
-            'email' =>
-                'javierme.97@iespacomolla.es',
+            [
 
-            'direccion' =>
-                'Calle Román, Número 14A',
+                'nombre' =>
+                    'Javier Martinez Espinosa',
 
-            'telefono' =>
-                '608901929',
+                'direccion' =>
+                    'Calle Román, Número 14A',
 
-            'password' =>
-                Hash::make('123456789'),
+                'telefono' =>
+                    '608901929',
 
-            'avatar_url' =>
-                'https://i.pravatar.cc/300?img=13',
+                'password' =>
+                    Hash::make('123456789'),
 
-        ])->assignRole('Usuario');
+                'avatar_url' =>
+                    'https://i.pravatar.cc/300?img=13',
+
+            ]
+        );
+
+        $usuario->assignRole('Usuario');
 
         /*
         |--------------------------------------------------------------------------
         | Generar avatares únicos
         |--------------------------------------------------------------------------
-        |
-        | Usamos el ID del usuario
-        | para mantener avatares fijos.
-        |
         */
 
         User::all()->each(function ($user) {
