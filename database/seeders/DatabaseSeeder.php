@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             AutorSeeder::class,
             LibroSeeder::class,
             PrestamoSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

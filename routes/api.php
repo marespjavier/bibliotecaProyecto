@@ -4,6 +4,7 @@ use App\Http\Controllers\AutorController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\LibroController;
 use App\Http\Controllers\PrestamoController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -53,4 +54,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+
+    // reviews
+    Route::get('/review', [ReviewController::class, 'index']);
+    Route::get('/review/{review}', [ReviewController::class, 'show']);
+    Route::post('/review', [ReviewController::class, 'store']);
+    Route::put('/review/{review}', [ReviewController::class, 'update']);
+    Route::delete('/review/{review}', [ReviewController::class, 'destroy']);
 });

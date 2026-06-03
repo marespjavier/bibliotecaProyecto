@@ -57,4 +57,9 @@ class Libro extends Model
 
         return !$prestamoActivo;
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
